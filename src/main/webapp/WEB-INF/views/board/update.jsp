@@ -58,59 +58,6 @@
 		<div class="bigPicture"></div>
 	</div>
 
-<style>
-.uploadResult {
-	width: 100%;
-	background-color: #eeeeee;
-}
-
-.uploadResult ul {
-	display: flex;
-	flex-flow: row;
-	justify-content: center;
-	align-items: center;
-}
-
-.uploadResult ul li {
-	list-style: none;
-	padding: 10px;
-	align-content: center;
-	text-align: center;
-}
-
-.uploadResult ul li img {
-	width: 100px;
-}
-
-.uploadResult ul li span {
-	color: black;
-}
-
-.bigPictureWrapper {
-	position: absolute;
-	display: none;
-	justify-content: center;
-	align-items: center;
-	top: 0%;
-	width: 100%;
-	height: 100%;
-	background-color: gray;
-	z-index: 100;
-	background: rgba(255, 255, 255, 0.5);
-}
-
-.bigPicture {
-	position: relative;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.bigPicture img {
-	width: 600px;
-}
-</style>
-
 <script type="text/javascript"src="<c:url value="/webjars/jquery/3.6.0/dist/jquery.js" />"></script>
 	
 <script>

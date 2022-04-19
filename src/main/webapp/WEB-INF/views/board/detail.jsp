@@ -267,7 +267,7 @@ th {
 			success : function (result) { 
 				console.log("result : " + result); 
 				if (result == "delSuccess") {
-					alert("댓글 삭제 완료!"); 
+					console.log("댓글 삭제 완료!"); 
 					$("#modifyModal").modal('hide'); // Modal 닫기  
 					getReplies(); // 댓글 목록 갱신 
 				} 
@@ -285,7 +285,6 @@ th {
 		
 		console.log(reply_no + " " + reply_text);
 		
-		// AJAX통신 : PUT
 		$.ajax({ 
 			type : "POST", 
 			url : "${contextPath}/updateReply/" + reply_no, 
@@ -298,7 +297,7 @@ th {
 			success : function (result) { 
 				console.log("result : " + result);
 				if (result == "modSuccess") {
-					alert("댓글 수정 완료!");
+					console.log("댓글 수정 완료!");
 					$("#modifyModal").modal('hide'); // Modal 닫기  
 					getReplies(); // 댓글 목록 갱신 
 				} 

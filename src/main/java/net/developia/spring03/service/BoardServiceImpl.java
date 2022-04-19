@@ -23,12 +23,14 @@ public class BoardServiceImpl implements BoardService {
 	public BoardServiceImpl(BoardDAO boardDAO) {
 		this.boardDAO = boardDAO;
 	}
-
+	
+	// 게시판 insert, 파일 insert 
 	@Transactional
 	@Override
 	public void insertBoard(BoardDTO boardDTO) throws Exception {
 		boardDAO.insertBoard(boardDTO);
-
+		
+		// 첨부 파일 리스트가 있는지 확인
 		if (boardDTO.getAttachList() == null || boardDTO.getAttachList().size() <= 0) {
 			return;
 		}

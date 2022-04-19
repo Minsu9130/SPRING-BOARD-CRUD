@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.developia.spring03.dao.BoardDAO">
-
+	
+	<!-- 게시글 insert -->
    <insert id="insertBoard" parameterType="BoardDTO">
    		<selectKey keyProperty="no" order="BEFORE" resultType="long">
             SELECT board_no_seq.nextval
@@ -12,12 +13,7 @@
       VALUES(#{no}, #{title}, #{name}, #{password}, #{content})
    </insert>
    
-   <select id="getBoardList" resultType="BoardDTO">
-		SELECT NO, title, NAME, regdate, readcount
-		FROM board
-		ORDER BY NO DESC
-   </select>
-   
+   <!-- 게시판 read (paging 처리) -->
    <select id="getBoardListPage" parameterType="long" resultType="BoardDTO">
 	SELECT B.*
 	FROM (SELECT  rownum AS rnum, A.*
@@ -27,49 +23,52 @@
 	WHERE rnum BETWEEN #{startNum} AND #{endNum}
 	</select>
 	
+	<!-- 게시글 상세조회 -->
    <select id="getDetail" parameterType="long" resultType="BoardDTO">
 		SELECT no, title, name, content, regdate, readcount
 		FROM board
 		WHERE no = #{no}
    </select>
    
+   <!-- 게시글 조회수 기능 -->
    <update id="updateReadCount" parameterType="long">
    		UPDATE board
    		SET readcount = readcount + 1
    		WHERE no = #{no}
    </update>
    
+   <!-- 게시글 delete -->
    <delete id="deleteBoard" parameterType="BoardDTO">
 		DELETE board
 		WHERE no=#{no} AND password=#{password}
    </delete>
    
+   <!-- 게시글 update -->
    <update id="updateBorad" parameterType="BoardDTO">
 		UPDATE board
    		SET title = #{title}, name=#{name}, content = #{content} 
    		WHERE no = #{no} AND password=#{password}
    </update>
    
+   <!-- 전체 게시글 수 파악 -->
 	<select id="getBoardCount" resultType="long">
 		SELECT count(*) as cnt 
 		FROM   board
 	</select>
 	
+	<!-- 파일 insert -->
 	<insert id="insertFile" parameterType="AttachFileDTO">
 		INSERT INTO attach_file (uuid, uploadpath, filename, image, bno)
 		VALUES (#{uuid}, #{uploadPath}, #{fileName}, #{image}, #{bno})
 	</insert>
 	
+	<!-- 게시글 상세페이지에서 업로드한 파일 조회 -->
 	<select id="findByBno" resultType="AttachFileDTO">
 		select * from attach_file 
 		where bno = #{bno}	
 	</select>
 	
-	<insert id="userJoin"> 
-		INSERT INTO tb_user ( user_id , user_pw , user_name , user_email ) 
-		VALUES ( #{userId} , #{userPw} , #{userName} , #{userEmail} ) 
-	</insert>
-	
+	<!-- 게시글 update 시 파일 전부 삭제 -->
 	<delete id="deleteFileAll">
 		DELETE attach_file
 		WHERE bno=#{no} 
