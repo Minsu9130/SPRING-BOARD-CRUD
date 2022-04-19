@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.developia.spring03.dao.ReplyDAO">
+	<select id="readReply" resultType="ReplyDTO">
+    	SELECT *
+    	FROM reply_board
+    	WHERE bno = #{bno}
+    	ORDER BY rno DESC
+	</select>
+	
+	<insert id="insertReply">
+		INSERT INTO REPLY_BOARD(BNO, RNO, CONTENT, WRITER)
+    	VALUES(#{bno}, REPLY_BOARD_SEQ.NEXTVAL, #{content}, #{writer})		
+	</insert>
+	
+	<delete id="deleteReply">
+		delete from REPLY_BOARD where rno = #{rno}
+	</delete>
+	
+	<update id="updateReply">
+		update REPLY_BOARD set content=#{content}
+		where rno = #{rno}
+	</update>
+</mapper>

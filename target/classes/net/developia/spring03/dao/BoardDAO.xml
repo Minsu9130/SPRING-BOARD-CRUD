@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.developia.spring03.dao.BoardDAO">
+
+   <insert id="insertBoard" parameterType="BoardDTO">
+   		<selectKey keyProperty="no" order="BEFORE" resultType="long">
+            SELECT board_no_seq.nextval
+            FROM dual
+        </selectKey>
+      INSERT INTO board(no, title, name, password, content)
+      VALUES(#{no}, #{title}, #{name}, #{password}, #{content})
+   </insert>
+   
+   <select id="getBoardList" resultType="BoardDTO">
+		SELECT NO, title, NAME, regdate, readcount
+		FROM board
+		ORDER BY NO DESC
+   </select>
+   
+   <select id="getBoardListPage" parameterType="long" resultType="BoardDTO">
+	SELECT B.*
+	FROM (SELECT  rownum AS rnum, A.*
+	      FROM	(SELECT no, title, name, decode (to_char(regdate, 'yyyy-MM-dd'), to_char(sysdate, 'yyyy-MM-dd'), to_char(regdate, 'HH24:MI:SS'), to_char(regdate, 'yyyy-MM-dd')) as regdate, readcount
+		         FROM   board
+	             ORDER  BY no DESC) A) B
+	WHERE rnum BETWEEN #{startNum} AND #{endNum}
+	</select>
+	
+   <select id="getDetail" parameterType="long" resultType="BoardDTO">
+		SELECT no, title, name, content, regdate, readcount
+		FROM board
+		WHERE no = #{no}
+   </select>
+   
+   <update id="updateReadCount" parameterType="long">
+   		UPDATE board
+   		SET readcount = readcount + 1
+   		WHERE no = #{no}
+   </update>
+   
+   <delete id="deleteBoard" parameterType="BoardDTO">
+		DELETE board
+		WHERE no=#{no} AND password=#{password}
+   </delete>
+   
+   <update id="updateBorad" parameterType="BoardDTO">
+		UPDATE board
+   		SET title = #{title}, name=#{name}, content = #{content} 
+   		WHERE no = #{no} AND password=#{password}
+   </update>
+   
+	<select id="getBoardCount" resultType="long">
+		SELECT count(*) as cnt 
+		FROM   board
+	</select>
+	
+	<insert id="insertFile" parameterType="AttachFileDTO">
+		INSERT INTO attach_file (uuid, uploadpath, filename, image, bno)
+		VALUES (#{uuid}, #{uploadPath}, #{fileName}, #{image}, #{bno})
+	</insert>
+	
+	<select id="findByBno" resultType="AttachFileDTO">
+		select * from attach_file 
+		where bno = #{bno}	
+	</select>
+	
+	<insert id="userJoin"> 
+		INSERT INTO tb_user ( user_id , user_pw , user_name , user_email ) 
+		VALUES ( #{userId} , #{userPw} , #{userName} , #{userEmail} ) 
+	</insert>
+	
+	<delete id="deleteFileAll">
+		DELETE attach_file
+		WHERE bno=#{no} 
+	</delete>
+</mapper>
